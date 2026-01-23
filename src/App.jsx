@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import Bonus from './assets/bonus.png'
+import Coins from './assets/coins.png'
+import Timer from './assets/timer.png'
+import Score from './assets/score.png'
 import './App.css'
 
 function App() {
@@ -75,37 +77,84 @@ function App() {
     setMoney(10)
 
   }
-  function buyArea(){
+  function buyArea() {
     setMoney(money - 10)
-    
+
+
 
   }
 
 
   return (
     <>
-    <h1>Money: {money}💰</h1>
-      <div className="quiz">
 
-        {/* <h3>Счёт: {count}</h3> */}
-        <h3>Время:{seconds}</h3>
-        <h2>{currentQ.question}</h2>
+      <h1>Catch The Grass 🌴</h1>
+      <div className="panel">
+        <div className="ui">
+          <img src={Score} alt="" />
+          <h3>Счёт: {count}</h3>
 
-        {[...currentQ.incorrectAnswers, currentQ.correctAnswer].map((answer, index) => (
-          <button key={index} onClick={() => checkAnswer(answer)}>{answer}</button>
-        ))}
+        </div>
+        <div className="ui">
+          <img src={Timer} alt="" />
+          <h3>Время:{seconds}</h3>
+        </div>
+        <div className="ui">
+          <img src={Coins} alt="" />
+          <h3>Монет: {money}</h3>
 
-        <div>
+        </div>
+        <div className="ui">
+          <img src={Bonus} alt="" />
+          <h3> Бонус:</h3>
+
         </div>
 
+
+
+
+
+
+
+
       </div>
 
-      <div className="container">
-        <div className="square" onClick={() => buyArea()}></div>
-        <div className="square" onClick={() => buyArea()}></div>
-        <div className="square" onClick={() => buyArea()}></div>
+      <div className="display">
+        <div className="container">
+          <div className="display1">
+            <div className="square" onClick={() => buyArea()}></div>
+            <div className="square" onClick={() => buyArea()}></div>
+            <div className="square" onClick={() => buyArea()}></div>
+          </div>
+          <div className="display1">
+            <div className="square" onClick={() => buyArea()}></div>
+            <div className="square" onClick={() => buyArea()}></div>
+            <div className="square" onClick={() => buyArea()}></div>
+          </div>
+          <div className="display1">
+            <div className="square" onClick={() => buyArea()}></div>
+            <div className="square" onClick={() => buyArea()}></div>
+            <div className="square" onClick={() => buyArea()}></div>
+          </div>
+          
+        </div>
+        <div className="quiz">
+          <h2>{currentQ.question}</h2>
+          {[...currentQ.incorrectAnswers, currentQ.correctAnswer].map((answer, index) => (
+            <button key={index} onClick={() => checkAnswer(answer)}>{answer}</button>
+          ))}
+
+          <div>
+          </div>
+
+        </div>
+
+
       </div>
-    
+
+
+
+
 
     </>
   )

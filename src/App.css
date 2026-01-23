@@ -5,7 +5,7 @@
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #5f2dbd, #7c3aed);
   min-height: 100vh;
   color: #111;
   padding: 30px 20px;
@@ -35,7 +35,7 @@ h2 {
   max-width: 520px;
   width: 100%;
   padding: 30px;
-  background: #ffffff;
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
   border-radius: 24px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
 }
@@ -57,7 +57,7 @@ h2 {
 
 button {
   padding: 20px 24px;
-  background: #ffffff;
+  background: rgba(255,255,255,0.12);
   border: 2px solid #e2e8f0;
   border-radius: 16px;
   font-size: 17px;
@@ -72,14 +72,15 @@ button {
 }
 
 h1 {
+  font-size: 38px;
+  font-weight: 700;
   text-align: center;
-  color: black;
+  color: #ffffff;
+  margin-bottom: 25px;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 }
 
-h3 {
-  text-align: center;
 
-}
 
 h2 {
   color: black;
@@ -114,20 +115,81 @@ button:active {
 }
 
 .container {
-  display: flex;
-  justify-content: center;
-  padding: 20px;
-  gap: 5px;
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  padding: 30px;
+  border-radius: 24px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  
+  gap: 14px;
 }
 
+
 .square {
-  width: 100px; /* Нужно задать явные размеры! */
-  height: 100px; /* Нужно задать явные размеры! */
-  border: 2px solid black;
+  width: 100px;
+  height: 100px;
+  border-radius: 18px;
   background-image: url('assets/i.png');
-  background-size: cover; 
-  background-repeat: no-repeat;
-}
-.square:hover{
+  background-size: cover;
+  background-position: center;
   cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.2);
+  margin-top: 10px
+}
+
+.square:hover {
+  transform: scale(1.06);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+
+.square:hover {
+  cursor: pointer;
+}
+
+.display {
+  display: flex;
+  gap: 20px;
+
+}
+.display1 {
+  display: flex;
+  gap: 20px;
+
+}
+.panel {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.panel .ui {
+  background: rgba(255,255,255,0.12);
+  padding: 16px 22px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 500;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  color: white;
+}
+.panel .ui img{
+  display: block;
+  margin: auto;
+  width: 48px;
+  height: 48px;
+}
+@media(max-width:600px){
+  .display{
+    display: flex;
+    flex-direction: column;
+  }
+  .ui{
+    padding: 0;
+  }
+  .panel{
+    gap: 10px;
+  }
+
 }
