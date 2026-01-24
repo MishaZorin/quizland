@@ -4,17 +4,63 @@ import Bonus from './assets/bonus.png'
 import Coins from './assets/coins.png'
 import Timer from './assets/timer.png'
 import Score from './assets/score.png'
+import Village from './assets/village.png'
+import Forest from './assets/forest.png'
+import Beach from './assets/beach.png'
+import Ordinary from './assets/i.png'
+import Shop from './assets/shop.png'
 import './App.css'
 
 function App() {
+  const [bioms,setBioms] = useState([
+    {
+      name: 'Ordinary biom',
+      img: Ordinary
+    },
+    {
+      name: 'Village biom',
+      img: Village
+    },
+    {
+      name: 'Forest biom',
+      img: Forest
+    },
+    {
+      name: 'Beach biom',
+      img: Beach
+    },
+  ])
+  const [forestBiom, setForestBiom] = useState([
+    
+     {
+      name: 'Ordinary biom',
+      img: Ordinary
+    },
+    {
+       name: 'Forest biom',
+      img: Forest
+    },
+    {
+      name: 'Ordinary biom',
+      img: Ordinary
+    }
+  ])
+  const [biomForestIndex, setBiomForestIndex] = useState(0)
   const [money, setMoney] = useState(10)
   const [count, setCount] = useState(0)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [seconds, setSeconds] = useState(30)
   const [questions, setQuestions] = useState([])
+  // setBioms(()=>{
+  //   const randomBiom = bioms[Math.floor(Math.random() * bioms.length)]
+  //   console.log(randomBiom);
+    
+
+  // })
+  
 
   async function getQuestions() {
-    let url = 'https://the-trivia-api.com/api/questions'
+    let url = 'https://the-trivia-api.com/api/questions?limit=100'
     try {
       let response = await fetch(url)
       let result = await response.json()
@@ -77,8 +123,12 @@ function App() {
     setMoney(10)
 
   }
-  function buyArea() {
+  function buyArea(biomForestIndex) {
     setMoney(money - 10)
+    setBiomForestIndex(biomForestIndex)
+    console.log(biomForestIndex);
+    
+
 
 
 
@@ -107,35 +157,25 @@ function App() {
         <div className="ui">
           <img src={Bonus} alt="" />
           <h3> Бонус:</h3>
-
         </div>
-
-
-
-
-
-
-
+        <div className="ui">
+          <img src={Shop} alt="" />
+          <h3>Магазин</h3>
+        </div>
 
       </div>
 
       <div className="display">
         <div className="container">
-          <div className="display1">
-            <div className="square" onClick={() => buyArea()}></div>
-            <div className="square" onClick={() => buyArea()}></div>
-            <div className="square" onClick={() => buyArea()}></div>
-          </div>
-          <div className="display1">
-            <div className="square" onClick={() => buyArea()}></div>
-            <div className="square" onClick={() => buyArea()}></div>
-            <div className="square" onClick={() => buyArea()}></div>
-          </div>
-          <div className="display1">
-            <div className="square" onClick={() => buyArea()}></div>
-            <div className="square" onClick={() => buyArea()}></div>
-            <div className="square" onClick={() => buyArea()}></div>
-          </div>
+          
+            {forestBiom.map((biom,biomForestIndex) => (
+               <div className="square" onClick={() => buyArea(biomForestIndex)}>{<img src={biom.img} alt='' />}</div>
+
+            ))}
+           
+            
+          
+          
           
         </div>
         <div className="quiz">
