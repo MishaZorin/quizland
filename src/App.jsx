@@ -9,10 +9,11 @@ import Forest from './assets/forest.png'
 import Beach from './assets/beach.png'
 import Ordinary from './assets/i.png'
 import Shop from './assets/shop.png'
+import Passive from './assets/passive.png'
 import './App.css'
 
 function App() {
-  const [bioms,setBioms] = useState([
+  const [bioms, setBioms] = useState([
     {
       name: 'Ordinary biom',
       img: Ordinary
@@ -30,34 +31,94 @@ function App() {
       img: Beach
     },
   ])
-  const [forestBiom, setForestBiom] = useState([
-    
+   const [forestBiom, setForestBiom] = useState(() => {
+    // const savedBioms = localStorage.getItem('forestBiom')
+
+    // if (savedBioms !== null) {
+    //   return JSON.parse(savedBioms)
+    // }
+
+    return [
      {
       name: 'Ordinary biom',
-      img: Ordinary
-    },
-    {
-       name: 'Forest biom',
-      img: Forest
+      img: Ordinary,
+      price: 5,
+      bought: false,
+      selector: null
     },
     {
       name: 'Ordinary biom',
-      img: Ordinary
+      img: Ordinary,
+      price: 5,
+      bought: false,
+      selector: null
+    },
+    {
+      name: 'Ordinary biom',
+      img: Ordinary,
+      price: 5,
+      bought: false,
+      selector: null
+    },
+
+    {
+      name: 'Ordinary biom',
+      img: Ordinary,
+      price: 5,
+      bought: false,
+      selector: null
+    },
+    {
+      name: 'Forest biom',
+      img: Forest,
+      price: 15,
+      bought: false,
+      selector: null
+    },
+    {
+      name: 'Ordinary biom',
+      img: Ordinary,
+      price: 5,
+      bought: false,
+      selector: null
+    },
+    {
+      name: 'Ordinary biom',
+      img: Ordinary,
+      price: 5,
+      bought: false,
+      selector: null
+    },
+    {
+      name: 'Ordinary biom',
+      img: Ordinary,
+      price: 5,
+      bought: false,
+      selector: null
+    },
+    {
+      name: 'Ordinary biom',
+      img: Ordinary,
+      price: 5,
+      bought: false,
+      selector: null
     }
-  ])
+    ]
+  })
+
+  //  useEffect(() => {
+  //   localStorage.setItem('forestBiom', JSON.stringify(forestBiom))
+  // }, [forestBiom])
+
   const [biomForestIndex, setBiomForestIndex] = useState(0)
   const [money, setMoney] = useState(10)
   const [count, setCount] = useState(0)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [seconds, setSeconds] = useState(30)
   const [questions, setQuestions] = useState([])
-  // setBioms(()=>{
-  //   const randomBiom = bioms[Math.floor(Math.random() * bioms.length)]
-  //   console.log(randomBiom);
-    
+  const [passiveIncome, setPassiveIncome] = useState(1)
 
-  // })
-  
+
 
   async function getQuestions() {
     let url = 'https://the-trivia-api.com/api/questions?limit=100'
@@ -123,11 +184,30 @@ function App() {
     setMoney(10)
 
   }
+ function addPasiveIncome(){
+  setPassiveIncome((passiveIncome)=>{
+    passiveIncome = passiveIncome + 1
+  })
+  
+ }
   function buyArea(biomForestIndex) {
-    setMoney(money - 10)
     setBiomForestIndex(biomForestIndex)
-    console.log(biomForestIndex);
-    
+    setForestBiom((forestBiom) => {
+      let nextBiom = [...forestBiom]
+      let currentBiom = nextBiom[biomForestIndex]
+      currentBiom.bought = true
+      setMoney((money) => money - currentBiom.price)
+      setInterval(addPasiveIncome,1000)
+
+      console.log(currentBiom);
+
+      // console.log(nextBiom);
+      return nextBiom
+
+
+    })
+
+
 
 
 
@@ -137,6 +217,7 @@ function App() {
 
   return (
     <>
+
 
       <h1>Catch The Grass 🌴</h1>
       <div className="panel">
@@ -162,21 +243,29 @@ function App() {
           <img src={Shop} alt="" />
           <h3>Магазин</h3>
         </div>
+        <div className="ui">
+          <img src={Passive} alt="" />
+          <h3>Пассивный доход:{passiveIncome}</h3>
+        </div>
 
       </div>
 
       <div className="display">
         <div className="container">
-          
-            {forestBiom.map((biom,biomForestIndex) => (
-               <div className="square" onClick={() => buyArea(biomForestIndex)}>{<img src={biom.img} alt='' />}</div>
+          {/* через slice */}
+          <div className="display1">
+            {forestBiom.map((biom, biomForestIndex) => (
+              <div className={`square ${biom.bought ? 'square--bought' : 'square--locked'}`} onClick={() => buyArea(biomForestIndex)}>{<img src={biom.img} alt='' />}</div>
 
             ))}
-           
-            
-          
-          
-          
+
+          </div>
+
+
+
+
+
+
         </div>
         <div className="quiz">
           <h2>{currentQ.question}</h2>

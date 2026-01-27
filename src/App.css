@@ -57,7 +57,7 @@ h2 {
 
 button {
   padding: 20px 24px;
-  background: rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.12);
   border: 2px solid #e2e8f0;
   border-radius: 16px;
   font-size: 17px;
@@ -118,10 +118,10 @@ button:active {
   background: linear-gradient(135deg, #7c3aed, #6d28d9);
   padding: 30px;
   border-radius: 24px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
 
   gap: 14px;
-  
+
 }
 
 
@@ -129,23 +129,35 @@ button:active {
   width: 100px;
   height: 100px;
   border-radius: 18px;
-  /* background-size: cover;
-  background-position: center; */
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
-  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.2);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.2);
   margin-top: 10px;
-  background: grey;
+   backdrop-filter: blur(4px) brightness(0.95);
+  background-color: rgba(128, 128, 128, 0.1);
+  overflow: hidden;
+
 }
-.square img{
+
+.square img {
   width: 100px;
   height: 100px;
   object-fit: cover;
-   border-radius: 18px;
+  border-radius: 18px;
+ 
+}
+.square--locked {
+  filter: grayscale(100%) brightness(0.7);
+}
+
+
+.square--bought {
+  background-color: rgba(0, 200, 0, 0.2);
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
 }
 .square:hover {
   transform: scale(1.06);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 
@@ -158,11 +170,14 @@ button:active {
   gap: 20px;
 
 }
-.display1 {
-  display: flex;
-  gap: 20px;
 
+.display1 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 350px; /* опционально, для контроля ширины */
 }
+
 .panel {
   display: flex;
   gap: 16px;
@@ -171,32 +186,36 @@ button:active {
 }
 
 .panel .ui {
-  background: rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.12);
   padding: 16px 22px;
   border-radius: 14px;
   font-size: 16px;
   font-weight: 500;
   backdrop-filter: blur(8px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
   color: white;
 }
-.panel .ui img{
+
+.panel .ui img {
   display: block;
   margin: auto;
   width: 48px;
   height: 48px;
 }
-@media(max-width:600px){
-  .display{
+
+@media(max-width:600px) {
+  .display {
     display: flex;
     flex-direction: column;
   }
-  .panel .ui{
+
+  .panel .ui {
     padding: 5px;
   }
-  .panel{
+
+  .panel {
     gap: 10px;
   }
-  
+
 
 }
