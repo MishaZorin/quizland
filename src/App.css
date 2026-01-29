@@ -183,6 +183,7 @@ button:active {
   gap: 16px;
   justify-content: center;
   margin-bottom: 30px;
+  flex-wrap: wrap;
 }
 
 .panel .ui {
@@ -194,6 +195,7 @@ button:active {
   backdrop-filter: blur(8px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
   color: white;
+  
 }
 
 .panel .ui img {
@@ -208,13 +210,17 @@ button:active {
     display: flex;
     flex-direction: column;
   }
-
-  .panel .ui {
-    padding: 5px;
+  .panel{
+    flex-wrap: wrap;
   }
 
-  .panel {
-    gap: 10px;
+
+  
+  .panel .ui {
+    flex: 1;
+    max-width: 200px;
+
+
   }
 
 

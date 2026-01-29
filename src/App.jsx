@@ -185,11 +185,18 @@ function App() {
 
   }
  function addPasiveIncome(){
-  setPassiveIncome((passiveIncome)=>{
-    passiveIncome = passiveIncome + 1
-  })
+  let pass = 0
+  for(let i = passiveIncome; i<50;i++){
+    pass = i
+
+  }
+  console.log(pass);
+  
+  
+  
   
  }
+//  setInterval(addPasiveIncome,1000)
   function buyArea(biomForestIndex) {
     setBiomForestIndex(biomForestIndex)
     setForestBiom((forestBiom) => {
@@ -197,7 +204,7 @@ function App() {
       let currentBiom = nextBiom[biomForestIndex]
       currentBiom.bought = true
       setMoney((money) => money - currentBiom.price)
-      setInterval(addPasiveIncome,1000)
+      
 
       console.log(currentBiom);
 
