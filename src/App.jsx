@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
+// import { Routes, Route } from "react-router-dom";
 import Bonus from './assets/bonus.png'
 import Coins from './assets/coins.png'
 import Timer from './assets/timer.png'
@@ -11,6 +12,7 @@ import Ordinary from './assets/i.png'
 import Shop from './assets/shop.png'
 import Passive from './assets/passive.png'
 import './App.css'
+// import Shop1 from './Shop'
 
 function App() {
   const [bioms, setBioms] = useState([
@@ -31,7 +33,16 @@ function App() {
       img: Beach
     },
   ])
-   const [forestBiom, setForestBiom] = useState(() => {
+  const [randomBonus, setRandomBonus] = useState([
+    {
+    name: 'Some money...'
+  },
+  {
+    name: 'Some seconds'
+  }
+])
+  const [countBioms, setCountBioms] = useState(0)
+  const [forestBiom, setForestBiom] = useState(() => {
     // const savedBioms = localStorage.getItem('forestBiom')
 
     // if (savedBioms !== null) {
@@ -39,70 +50,70 @@ function App() {
     // }
 
     return [
-     {
-      name: 'Ordinary biom',
-      img: Ordinary,
-      price: 5,
-      bought: false,
-      selector: null
-    },
-    {
-      name: 'Ordinary biom',
-      img: Ordinary,
-      price: 5,
-      bought: false,
-      selector: null
-    },
-    {
-      name: 'Ordinary biom',
-      img: Ordinary,
-      price: 5,
-      bought: false,
-      selector: null
-    },
+      {
+        name: 'Ordinary biom',
+        img: Ordinary,
+        price: 5,
+        bought: false,
+        selector: 'ord'
+      },
+      {
+        name: 'Ordinary biom',
+        img: Ordinary,
+        price: 5,
+        bought: false,
+        selector: 'ord'
+      },
+      {
+        name: 'Ordinary biom',
+        img: Ordinary,
+        price: 5,
+        bought: false,
+        selector: 'ord'
+      },
 
-    {
-      name: 'Ordinary biom',
-      img: Ordinary,
-      price: 5,
-      bought: false,
-      selector: null
-    },
-    {
-      name: 'Forest biom',
-      img: Forest,
-      price: 15,
-      bought: false,
-      selector: null
-    },
-    {
-      name: 'Ordinary biom',
-      img: Ordinary,
-      price: 5,
-      bought: false,
-      selector: null
-    },
-    {
-      name: 'Ordinary biom',
-      img: Ordinary,
-      price: 5,
-      bought: false,
-      selector: null
-    },
-    {
-      name: 'Ordinary biom',
-      img: Ordinary,
-      price: 5,
-      bought: false,
-      selector: null
-    },
-    {
-      name: 'Ordinary biom',
-      img: Ordinary,
-      price: 5,
-      bought: false,
-      selector: null
-    }
+      {
+        name: 'Ordinary biom',
+        img: Ordinary,
+        price: 5,
+        bought: false,
+        selector: 'ord'
+      },
+      {
+        name: 'Forest biom',
+        img: Forest,
+        price: 15,
+        bought: false,
+        selector: 'fors'
+      },
+      {
+        name: 'Ordinary biom',
+        img: Ordinary,
+        price: 5,
+        bought: false,
+        selector: 'ord'
+      },
+      {
+        name: 'Ordinary biom',
+        img: Ordinary,
+        price: 5,
+        bought: false,
+        selector: 'ord'
+      },
+      {
+        name: 'Ordinary biom',
+        img: Ordinary,
+        price: 5,
+        bought: false,
+        selector: 'ord'
+      },
+      {
+        name: 'Ordinary biom',
+        img: Ordinary,
+        price: 5,
+        bought: false,
+        selector: 'ord'
+      }
     ]
   })
 
@@ -111,7 +122,7 @@ function App() {
   // }, [forestBiom])
 
   const [biomForestIndex, setBiomForestIndex] = useState(0)
-  const [money, setMoney] = useState(10)
+  const [coins, setCoins] = useState(10)
   const [count, setCount] = useState(0)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [seconds, setSeconds] = useState(30)
@@ -161,12 +172,26 @@ function App() {
     setSeconds(30)
     if (selectedAnswer == currentQ.correctAnswer) {
       setCount(count + 1)
-      setMoney(money + 10)
+      if(count == 2){
+        setCoins(coins + 10)
+      }
+      if(count == 3){
+        setCoins(coins + 20)
+      }
+      setCoins(coins + 10)
       setCurrentIndex(currentIndex + 1)
-
+      
     }
     else {
-      setMoney(money - 5)
+       setCoins((coins) => {
+        coins = coins - 5
+        if (coins < 0) {
+          coins = 0
+       
+        }
+        return coins
+      })
+      
       setCurrentIndex(currentIndex + 1)
     }
   }
@@ -184,27 +209,39 @@ function App() {
     setMoney(10)
 
   }
- function addPasiveIncome(){
-  let pass = 0
-  for(let i = passiveIncome; i<50;i++){
-    pass = i
 
-  }
-  console.log(pass);
-  
-  
-  
-  
- }
-//  setInterval(addPasiveIncome,1000)
+
+
   function buyArea(biomForestIndex) {
     setBiomForestIndex(biomForestIndex)
     setForestBiom((forestBiom) => {
       let nextBiom = [...forestBiom]
       let currentBiom = nextBiom[biomForestIndex]
-      currentBiom.bought = true
-      setMoney((money) => money - currentBiom.price)
-      
+      setCoins((coins) => {
+        coins = coins - currentBiom.price
+        if (coins < 0) {
+          coins = 0
+          currentBiom.bought = false
+        }
+        return coins
+      })
+
+      if (currentBiom.selector == 'ord') {
+        setCountBioms(countBioms + 1)
+        currentBiom.bought = true
+
+       
+
+
+      }
+      if (countBioms == 8 && currentBiom.selector == 'fors') {
+        currentBiom.bought = true
+        // setCoins(coins + 10)
+
+      }
+
+
+
 
       console.log(currentBiom);
 
@@ -224,8 +261,10 @@ function App() {
 
   return (
     <>
-
-
+      {/* <Routes>
+      <Route path="/shop" element={<Shop1 />} />
+    
+    </Routes> */}
       <h1>Catch The Grass 🌴</h1>
       <div className="panel">
         <div className="ui">
@@ -239,20 +278,21 @@ function App() {
         </div>
         <div className="ui">
           <img src={Coins} alt="" />
-          <h3>Монет: {money}</h3>
+          <h3>Монет: {coins}</h3>
 
         </div>
         <div className="ui">
           <img src={Bonus} alt="" />
           <h3> Бонус:</h3>
         </div>
-        <div className="ui">
+        {/* <div className="ui">
           <img src={Shop} alt="" />
-          <h3>Магазин</h3>
-        </div>
+       
+          <h3>Магазин </h3>
+        </div> */}
         <div className="ui">
           <img src={Passive} alt="" />
-          <h3>Пассивный доход:{passiveIncome}</h3>
+          <h3>Пассивный доход: + 1/мин</h3>
         </div>
 
       </div>

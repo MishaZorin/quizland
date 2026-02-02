@@ -136,9 +136,19 @@ button:active {
    backdrop-filter: blur(4px) brightness(0.95);
   background-color: rgba(128, 128, 128, 0.1);
   overflow: hidden;
+   animation: breathe 3s ease-in-out infinite;
 
 }
 
+
+@keyframes breathe {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
 .square img {
   width: 100px;
   height: 100px;
