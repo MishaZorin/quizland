@@ -265,7 +265,7 @@ function App() {
       <Route path="/shop" element={<Shop1 />} />
     
     </Routes> */}
-      <h1>Catch The Grass 🌴</h1>
+      <h1>QuizLand 🌴</h1>
       <div className="panel">
         <div className="ui">
           <img src={Score} alt="" />
