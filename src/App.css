@@ -113,6 +113,9 @@ button:active {
 .o {
   margin-top: 20px;
 }
+ .dimmed {
+  opacity: 0.4;
+}
 
 .container {
   background: linear-gradient(135deg, #7c3aed, #6d28d9);
@@ -214,7 +217,51 @@ button:active {
   width: 48px;
   height: 48px;
 }
+.instruction{
+  display: flex;
+  justify-content: center;
+}
+.modal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.25);
+  animation-name: appear;
+  animation-duration: 300ms;
+}
+.modal-content{
+  background: linear-gradient(135deg, #5f2dbd, #7c3aed);
+  padding: 40px;
+  border-radius: 20px;
+}
+.modal-content button{
+  display: block;
+  margin: auto;
+}
+p{
+   max-width: 500px;
+  padding: 20px;
 
+  background: linear-gradient(145deg, #f0f9f1, #dff3e3);
+  border-radius: 16px;
+
+  font-size: 16px;
+  line-height: 1.6;
+  color: #2f4f2f;
+
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+
+  border: 2px solid #9ed6a3;
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 @media(max-width:600px) {
   .display {
     display: flex;

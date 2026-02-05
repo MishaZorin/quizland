@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
 // import { Routes, Route } from "react-router-dom";
+import { useModalState } from 'react-hooks-kit';
 import Bonus from './assets/bonus.png'
 import Coins from './assets/coins.png'
 import Timer from './assets/timer.png'
@@ -12,8 +13,35 @@ import Ordinary from './assets/i.png'
 import Shop from './assets/shop.png'
 import Passive from './assets/passive.png'
 import './App.css'
-// import Shop1 from './Shop'
 
+
+const ModalInstruction = ({ isOpen, onClose }) => {
+  if (!isOpen) return null
+  return (
+    <div className='modal'>
+      <div className='modal-content'>
+        <h1>Инструкция</h1>
+        <p> 🌍 Отвечайте на вопросы викторины, чтобы зарабатывать монеты. <br />
+
+          🪙 Монеты нужны для покупки земель вокруг главного биома. <br />
+
+          🌱 Обычные земли дают пассивный доход. <br />
+
+          ⭐Когда все обычные земли куплены — открывается главный биом, <br />
+          который открывает новые возможности и новые территории. <br />
+
+          🎯Развивайте биомы и увеличивайте доход!</p>
+
+        <button onClick={onClose}>Закрыть</button>
+      </div>
+
+
+
+    </div>
+
+  )
+
+}
 function App() {
   const [bioms, setBioms] = useState([
     {
@@ -35,12 +63,12 @@ function App() {
   ])
   const [randomBonus, setRandomBonus] = useState([
     {
-    name: 'Some money...'
-  },
-  {
-    name: 'Some seconds'
-  }
-])
+      name: 'Some money...'
+    },
+    {
+      name: 'Some seconds'
+    }
+  ])
   const [countBioms, setCountBioms] = useState(0)
   const [forestBiom, setForestBiom] = useState(() => {
     // const savedBioms = localStorage.getItem('forestBiom')
@@ -121,6 +149,10 @@ function App() {
   //   localStorage.setItem('forestBiom', JSON.stringify(forestBiom))
   // }, [forestBiom])
 
+  const { isOpen, onOpen, onClose, onToggle } = useModalState();
+
+
+
   const [biomForestIndex, setBiomForestIndex] = useState(0)
   const [coins, setCoins] = useState(10)
   const [count, setCount] = useState(0)
@@ -128,6 +160,8 @@ function App() {
   const [seconds, setSeconds] = useState(30)
   const [questions, setQuestions] = useState([])
   const [passiveIncome, setPassiveIncome] = useState(1)
+  const [blockedButtons, setBlockedButtons] = useState(false)
+  const answr = document.getElementById('answr')
 
 
 
@@ -162,36 +196,50 @@ function App() {
 
     getQuestions()
   }, [])
+ useEffect(()=>{
+           const interval = setInterval(()=>{
+        setCoins(prev => prev + 1)
 
+      },30000)
+      return () => clearInterval(interval)
+
+      },[])
   if (questions.length === 0) {
     return <div>loading...</div>
   }
   const currentQ = questions[currentIndex]
-
   function checkAnswer(selectedAnswer) {
+
+    setBlockedButtons(true)
+    setTimeout(() => {
+      setBlockedButtons(false)
+      setCurrentIndex(currentIndex + 1)
+    }, 2000)
     setSeconds(30)
     if (selectedAnswer == currentQ.correctAnswer) {
+      answr.style.borderColor = 'green'
       setCount(count + 1)
-      if(count == 2){
+      if (count == 2) {
         setCoins(coins + 10)
       }
-      if(count == 3){
+      if (count == 3) {
         setCoins(coins + 20)
       }
       setCoins(coins + 10)
       setCurrentIndex(currentIndex + 1)
-      
+
     }
     else {
-       setCoins((coins) => {
+
+      setCoins((coins) => {
         coins = coins - 5
         if (coins < 0) {
           coins = 0
-       
+
         }
         return coins
       })
-      
+
       setCurrentIndex(currentIndex + 1)
     }
   }
@@ -230,7 +278,7 @@ function App() {
         setCountBioms(countBioms + 1)
         currentBiom.bought = true
 
-       
+
 
 
       }
@@ -239,13 +287,13 @@ function App() {
         // setCoins(coins + 10)
 
       }
-
-
+     
+   
 
 
       console.log(currentBiom);
 
-      // console.log(nextBiom);
+  
       return nextBiom
 
 
@@ -292,10 +340,20 @@ function App() {
         </div> */}
         <div className="ui">
           <img src={Passive} alt="" />
-          <h3>Пассивный доход: + 1/мин</h3>
+          <h3>Пассивный доход: + 1/ 30 сек</h3>
         </div>
 
+
       </div>
+      <div className="instruction">
+        <button onClick={onOpen}>Открыть инструкцию</button>
+
+
+        <ModalInstruction isOpen={isOpen} onClose={onClose} />
+
+
+      </div>
+
 
       <div className="display">
         <div className="container">
@@ -315,9 +373,11 @@ function App() {
 
         </div>
         <div className="quiz">
+
+
           <h2>{currentQ.question}</h2>
           {[...currentQ.incorrectAnswers, currentQ.correctAnswer].map((answer, index) => (
-            <button key={index} onClick={() => checkAnswer(answer)}>{answer}</button>
+            <button key={index} onClick={() => checkAnswer(answer)} className={blockedButtons ? "dimmed" : ''} disabled={blockedButtons} id='answr'>{answer}</button>
           ))}
 
           <div>
