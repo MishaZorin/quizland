@@ -357,13 +357,13 @@ function App() {
 
       <div className="display">
         <div className="container">
-          {/* через slice */}
+        
           <div className="display1">
             {forestBiom.map((biom, biomForestIndex) => (
               <div className={`square ${biom.bought ? 'square--bought' : 'square--locked'}`} onClick={() => buyArea(biomForestIndex)}>{<img src={biom.img} alt='' />}</div>
 
             ))}
-
+ 
           </div>
 
 
