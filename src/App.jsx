@@ -161,7 +161,8 @@ function App() {
   const [questions, setQuestions] = useState([])
   const [passiveIncome, setPassiveIncome] = useState(1)
   const [blockedButtons, setBlockedButtons] = useState(false)
-  const answr = document.getElementById('answr')
+  const [showCorrect, setShowCorrect] = useState(false);
+
 
 
 
@@ -196,28 +197,30 @@ function App() {
 
     getQuestions()
   }, [])
- useEffect(()=>{
-           const interval = setInterval(()=>{
-        setCoins(prev => prev + 1)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCoins(prev => prev + 1)
 
-      },30000)
-      return () => clearInterval(interval)
+    }, 30000)
+    return () => clearInterval(interval)
 
-      },[])
+  }, [])
   if (questions.length === 0) {
     return <div>loading...</div>
   }
   const currentQ = questions[currentIndex]
+
   function checkAnswer(selectedAnswer) {
 
-    setBlockedButtons(true)
+    setBlockedButtons(true);
+    setShowCorrect(true);
     setTimeout(() => {
-      setBlockedButtons(false)
-      setCurrentIndex(currentIndex + 1)
+      setBlockedButtons(false);
+      setShowCorrect(false);
+      setCurrentIndex(currentIndex + 1);
     }, 2000)
     setSeconds(30)
     if (selectedAnswer == currentQ.correctAnswer) {
-      answr.style.borderColor = 'green'
       setCount(count + 1)
       if (count == 2) {
         setCoins(coins + 10)
@@ -287,13 +290,13 @@ function App() {
         // setCoins(coins + 10)
 
       }
-     
-   
+
+
 
 
       console.log(currentBiom);
 
-  
+
       return nextBiom
 
 
@@ -357,13 +360,13 @@ function App() {
 
       <div className="display">
         <div className="container">
-        
+
           <div className="display1">
             {forestBiom.map((biom, biomForestIndex) => (
               <div className={`square ${biom.bought ? 'square--bought' : 'square--locked'}`} onClick={() => buyArea(biomForestIndex)}>{<img src={biom.img} alt='' />}</div>
 
             ))}
- 
+
           </div>
 
 
@@ -377,7 +380,23 @@ function App() {
 
           <h2>{currentQ.question}</h2>
           {[...currentQ.incorrectAnswers, currentQ.correctAnswer].map((answer, index) => (
-            <button key={index} onClick={() => checkAnswer(answer)} className={blockedButtons ? "dimmed" : ''} disabled={blockedButtons} id='answr'>{answer}</button>
+            <button
+              key={index}
+              onClick={() => checkAnswer(index)}
+              className={blockedButtons ? "dimmed" : ''}
+              disabled={blockedButtons}
+              style={{
+                borderColor:
+                  showCorrect && index === questions[currentIndex].correctAnswer
+                    ? 'green'
+                    : '',
+                borderWidth: '2px',
+                margin: '5px',
+                padding: '10px'
+              }}
+            >
+              {answer}
+            </button>
           ))}
 
           <div>
