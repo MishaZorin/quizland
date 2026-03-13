@@ -1,7 +1,5 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
-// import { Routes, Route } from "react-router-dom";
-import { useModalState } from 'react-hooks-kit';
 import Bonus from './assets/bonus.png'
 import Coins from './assets/coins.png'
 import Timer from './assets/timer.png'
@@ -19,33 +17,33 @@ import Passive from './assets/passive.png'
 import './App.css'
 
 
-const ModalInstruction = ({ isOpen, onClose }) => {
-  if (!isOpen) return null
-  return (
-    <div className='modal'>
-      <div className='modal-content'>
-        <h1>Инструкция</h1>
-        <p> 🌍 Отвечайте на вопросы викторины, чтобы зарабатывать монеты. <br />
+// const ModalInstruction = ({ isOpen, onClose }) => {
+//   if (!isOpen) return null
+//   return (
+//     <div className='modal'>
+//       <div className='modal-content'>
+//         <h1>Инструкция</h1>
+//         <p> 🌍 Отвечайте на вопросы викторины, чтобы зарабатывать монеты. <br />
 
-          🪙 Монеты нужны для покупки земель вокруг главного биома. <br />
+//           🪙 Монеты нужны для покупки земель вокруг главного биома. <br />
 
-          🌱 Обычные земли дают пассивный доход. <br />
+//           🌱 Обычные земли дают пассивный доход. <br />
 
-          ⭐Когда все обычные земли куплены — открывается главный биом, <br />
-          который открывает новые возможности и новые территории. <br />
+//           ⭐Когда все обычные земли куплены — открывается главный биом, <br />
+//           который открывает новые возможности и новые территории. <br />
 
-          🎯Развивайте биомы и увеличивайте доход!</p>
+//           🎯Развивайте биомы и увеличивайте доход!</p>
 
-        <button onClick={onClose}>Закрыть</button>
-      </div>
+//         <button onClick={onClose}>Закрыть</button>
+//       </div>
 
 
 
-    </div>
+//     </div>
 
-  )
+//   )
 
-}
+// }
 function App() {
   const [bioms, setBioms] = useState([
     
@@ -145,7 +143,7 @@ function App() {
       }
     ]
   })
-  const { isOpen, onOpen, onClose, onToggle } = useModalState();
+
   const [biomForestIndex, setBiomForestIndex] = useState(0)
   const [coins, setCoins] = useState(10)
   const [count, setCount] = useState(0)
@@ -308,10 +306,7 @@ function App() {
           <h3>Пассивный доход: + 1/ 30 сек</h3>
         </div>
       </div>
-      <div className="instruction">
-        <button onClick={onOpen}>Открыть инструкцию</button>
-        <ModalInstruction isOpen={isOpen} onClose={onClose} />
-      </div>
+      
       <div className="display">
         <div className="container">
           <div className="display1">
