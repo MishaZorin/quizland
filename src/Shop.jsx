@@ -1,6 +1,7 @@
-import { Routes, Route } from "react-router";
+import { Routes, Route } from "react-router-dom";
 
-function Shop() {
+
+function Shop1() {
   return (
     <div>
       <h1>Some Wizard with Steps</h1>
@@ -11,4 +12,4 @@ function Shop() {
     </div>
   );
 }
-export default Shop
+export default Shop1

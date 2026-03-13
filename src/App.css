@@ -262,6 +262,24 @@ p{
 
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+.q{
+  color: white;
+}
+.answerButtons{
+  color: white;
+}
+.correctAnswer{
+border: 2px solid green;
+}
+.incorrectAnswer{
+  border: 2px solid red;
+
+}
+.nextQuestion{
+  display: block;
+  margin: auto;
+  border: 4px solid #2f4f2f;
+}
 @media(max-width:600px) {
   .display {
     display: flex;

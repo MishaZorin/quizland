@@ -9,7 +9,11 @@ import Score from './assets/score.png'
 import Village from './assets/village.png'
 import Forest from './assets/forest.png'
 import Beach from './assets/beach.png'
-import Ordinary from './assets/i.png'
+import Ice from './assets/ice.png'
+import Castle from './assets/castle.png'
+import Desert from './assets/desert.png'
+import Jungles from './assets/jungles.png'
+import City from './assets/city.png'
 import Shop from './assets/shop.png'
 import Passive from './assets/passive.png'
 import './App.css'
@@ -44,10 +48,7 @@ const ModalInstruction = ({ isOpen, onClose }) => {
 }
 function App() {
   const [bioms, setBioms] = useState([
-    {
-      name: 'Ordinary biom',
-      img: Ordinary
-    },
+    
     {
       name: 'Village biom',
       img: Village
@@ -79,22 +80,22 @@ function App() {
 
     return [
       {
-        name: 'Ordinary biom',
-        img: Ordinary,
+        name: 'Beach biom',
+        img: Beach,
+        price: 5,
+        bought: false,
+        selector: 'ord'
+      },
+      {
+        name: 'Village biom',
+        img: Village,
         price: 5,
         bought: false,
         selector: 'ord'
       },
       {
         name: 'Ordinary biom',
-        img: Ordinary,
-        price: 5,
-        bought: false,
-        selector: 'ord'
-      },
-      {
-        name: 'Ordinary biom',
-        img: Ordinary,
+        img: Forest,
         price: 5,
         bought: false,
         selector: 'ord'
@@ -102,70 +103,59 @@ function App() {
 
       {
         name: 'Ordinary biom',
-        img: Ordinary,
+        img: Ice,
         price: 5,
         bought: false,
         selector: 'ord'
       },
       {
         name: 'Forest biom',
-        img: Forest,
+        img: Castle,
         price: 15,
         bought: false,
         selector: 'fors'
       },
       {
         name: 'Ordinary biom',
-        img: Ordinary,
+        img: City,
         price: 5,
         bought: false,
         selector: 'ord'
       },
       {
         name: 'Ordinary biom',
-        img: Ordinary,
+        img: Jungles,
         price: 5,
         bought: false,
         selector: 'ord'
       },
       {
         name: 'Ordinary biom',
-        img: Ordinary,
+        img: Desert,
         price: 5,
         bought: false,
         selector: 'ord'
       },
       {
         name: 'Ordinary biom',
-        img: Ordinary,
+        img: Beach,
         price: 5,
         bought: false,
         selector: 'ord'
       }
     ]
   })
-
-  //  useEffect(() => {
-  //   localStorage.setItem('forestBiom', JSON.stringify(forestBiom))
-  // }, [forestBiom])
-
   const { isOpen, onOpen, onClose, onToggle } = useModalState();
-
-
-
   const [biomForestIndex, setBiomForestIndex] = useState(0)
   const [coins, setCoins] = useState(10)
   const [count, setCount] = useState(0)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [seconds, setSeconds] = useState(30)
   const [questions, setQuestions] = useState([])
-  const [passiveIncome, setPassiveIncome] = useState(1)
-  const [blockedButtons, setBlockedButtons] = useState(false)
-  const [showCorrect, setShowCorrect] = useState(false);
-
-
-
-
+  const [selectedAnswer, setSelectedAnswer] = useState(null)
+  const [answerClass, setAnswerClass] = useState(null)
+  const [boughtBiom, setBoughtBiom] = useState(false);
+  const [showCorrectAnswer, setShowCorrectAnswer] = useState(false)
   async function getQuestions() {
     let url = 'https://the-trivia-api.com/api/questions?limit=100'
     try {
@@ -194,33 +184,27 @@ function App() {
   }, [seconds])
 
   useEffect(() => {
-
     getQuestions()
   }, [])
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCoins(prev => prev + 1)
 
-    }, 30000)
-    return () => clearInterval(interval)
 
-  }, [])
+
+
   if (questions.length === 0) {
     return <div>loading...</div>
   }
   const currentQ = questions[currentIndex]
 
-  function checkAnswer(selectedAnswer) {
-
-    setBlockedButtons(true);
-    setShowCorrect(true);
-    setTimeout(() => {
-      setBlockedButtons(false);
-      setShowCorrect(false);
-      setCurrentIndex(currentIndex + 1);
-    }, 2000)
+ function checkAnswer(answer) {
+    // setBlockedButtons(true);
+    // setShowCorrect(true);
+    // setTimeout(() => {
+    //   setBlockedButtons(false);
+    //   setShowCorrect(false);
+    //   setCurrentIndex(currentIndex + 1);
+    // }, 2000)
     setSeconds(30)
-    if (selectedAnswer == currentQ.correctAnswer) {
+    if (answer == currentQ.correctAnswer) {
       setCount(count + 1)
       if (count == 2) {
         setCoins(coins + 10)
@@ -246,6 +230,7 @@ function App() {
       setCurrentIndex(currentIndex + 1)
     }
   }
+
   let isFinished = currentIndex >= questions.length
   if (isFinished) {
     return <div className="o">
@@ -261,61 +246,38 @@ function App() {
 
   }
 
-
-
   function buyArea(biomForestIndex) {
     setBiomForestIndex(biomForestIndex)
     setForestBiom((forestBiom) => {
       let nextBiom = [...forestBiom]
       let currentBiom = nextBiom[biomForestIndex]
-      setCoins((coins) => {
-        coins = coins - currentBiom.price
-        if (coins < 0) {
-          coins = 0
-          currentBiom.bought = false
-        }
-        return coins
-      })
-
-      if (currentBiom.selector == 'ord') {
+      if (currentBiom.selector == 'ord' && !currentBiom.bought) {
         setCountBioms(countBioms + 1)
         currentBiom.bought = true
-
-
-
-
+        setBoughtBiom(true)
+        setCoins(prevMoney => prevMoney - currentBiom.price)
       }
-      if (countBioms == 8 && currentBiom.selector == 'fors') {
+      if (countBioms == 8 && currentBiom.selector == 'fors' ) {
         currentBiom.bought = true
-        // setCoins(coins + 10)
-
+        setBoughtBiom(true)
+        setCoins(prevMoney => prevMoney - currentBiom.price)
       }
-
-
-
-
-      console.log(currentBiom);
-
-
+      if (currentBiom.bought) {
+        passiveIncome()
+      }
       return nextBiom
-
-
     })
+    function passiveIncome() {
+      const interval = setInterval(() => {
+        setCoins(prev => prev + 1)
+      }, 30000)
+      return () => clearInterval(interval)
 
-
-
-
-
-
+    }
   }
-
 
   return (
     <>
-      {/* <Routes>
-      <Route path="/shop" element={<Shop1 />} />
-    
-    </Routes> */}
       <h1>QuizLand 🌴</h1>
       <div className="panel">
         <div className="ui">
@@ -345,22 +307,13 @@ function App() {
           <img src={Passive} alt="" />
           <h3>Пассивный доход: + 1/ 30 сек</h3>
         </div>
-
-
       </div>
       <div className="instruction">
         <button onClick={onOpen}>Открыть инструкцию</button>
-
-
         <ModalInstruction isOpen={isOpen} onClose={onClose} />
-
-
       </div>
-
-
       <div className="display">
         <div className="container">
-
           <div className="display1">
             {forestBiom.map((biom, biomForestIndex) => (
               <div className={`square ${biom.bought ? 'square--bought' : 'square--locked'}`} onClick={() => buyArea(biomForestIndex)}>{<img src={biom.img} alt='' />}</div>
@@ -368,32 +321,14 @@ function App() {
             ))}
 
           </div>
-
-
-
-
-
-
         </div>
         <div className="quiz">
-
-
-          <h2>{currentQ.question}</h2>
+          <h2 className='q'>{currentQ.question}</h2>
           {[...currentQ.incorrectAnswers, currentQ.correctAnswer].map((answer, index) => (
             <button
               key={index}
-              onClick={() => checkAnswer(index)}
-              className={blockedButtons ? "dimmed" : ''}
-              disabled={blockedButtons}
-              style={{
-                borderColor:
-                  showCorrect && index === questions[currentIndex].correctAnswer
-                    ? 'green'
-                    : '',
-                borderWidth: '2px',
-                margin: '5px',
-                padding: '10px'
-              }}
+              onClick={() => checkAnswer(answer)}
+              className={selectedAnswer == answer ? answerClass : ''}
             >
               {answer}
             </button>
