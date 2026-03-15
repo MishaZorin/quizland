@@ -127,7 +127,7 @@ function App() {
       }
     ]
   })
-
+// https://opentdb.com/api.php?amount=10&difficulty=easy
   const [biomForestIndex, setBiomForestIndex] = useState(0)
   const [coins, setCoins] = useState(10)
   const [count, setCount] = useState(0)
@@ -235,6 +235,7 @@ function App() {
       if (countBioms == 8 && currentBiom.selector == 'fors') {
         currentBiom.bought = true
         setBoughtBiom(true)
+        alert("Поздравляю!Вы победили!")
         setCoins(prevMoney => prevMoney - currentBiom.price)
       }
       if (currentBiom.bought) {
@@ -291,7 +292,7 @@ function App() {
           <h2 className='q'>{currentQ.question}</h2>
           {[...currentQ.incorrectAnswers, currentQ.correctAnswer].map((answer, index) => (
             <button
-              key={`${currentIndex}-${answer}`}
+              // key={`${currentIndex}-${answer}`}
               disabled={blocked}
               onClick={() => {
                 setSelectedAnswer(answer)
