@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
-import Bonus from './assets/bonus.png'
+import Modal from './modal.jsx'
 import Coins from './assets/coins.png'
 import Timer from './assets/timer.png'
 import Score from './assets/score.png'
@@ -12,41 +12,25 @@ import Castle from './assets/castle.png'
 import Desert from './assets/desert.png'
 import Jungles from './assets/jungles.png'
 import City from './assets/city.png'
-import Shop from './assets/shop.png'
+
 import Passive from './assets/passive.png'
 import './App.css'
 
 
-// const ModalInstruction = ({ isOpen, onClose }) => {
-//   if (!isOpen) return null
-//   return (
-//     <div className='modal'>
-//       <div className='modal-content'>
-//         <h1>Инструкция</h1>
-//         <p> 🌍 Отвечайте на вопросы викторины, чтобы зарабатывать монеты. <br />
-
-//           🪙 Монеты нужны для покупки земель вокруг главного биома. <br />
-
-//           🌱 Обычные земли дают пассивный доход. <br />
-
-//           ⭐Когда все обычные земли куплены — открывается главный биом, <br />
-//           который открывает новые возможности и новые территории. <br />
-
-//           🎯Развивайте биомы и увеличивайте доход!</p>
-
-//         <button onClick={onClose}>Закрыть</button>
-//       </div>
 
 
 
-//     </div>
 
-//   )
-
-// }
 function App() {
+  const [isOpen, setIsOpen] = useState(false)
+  function handleClick() {
+    setIsOpen(true)
+  }
+  function handleClose() {
+    setIsOpen(false)
+  }
   const [bioms, setBioms] = useState([
-    
+
     {
       name: 'Village biom',
       img: Village
@@ -153,9 +137,9 @@ function App() {
   const [selectedAnswer, setSelectedAnswer] = useState(null)
   const [answerClass, setAnswerClass] = useState(null)
   const [boughtBiom, setBoughtBiom] = useState(false);
-  const [showCorrectAnswer, setShowCorrectAnswer] = useState(false)
+  const [blocked, setBlocked] = useState(false)
   async function getQuestions() {
-    let url = 'https://the-trivia-api.com/api/questions?limit=100'
+    let url = 'https://the-trivia-api.com/api/questions?limit=100&categories=geography&difficulties=easy'
     try {
       let response = await fetch(url)
       let result = await response.json()
@@ -193,14 +177,8 @@ function App() {
   }
   const currentQ = questions[currentIndex]
 
- function checkAnswer(answer) {
-    // setBlockedButtons(true);
-    // setShowCorrect(true);
-    // setTimeout(() => {
-    //   setBlockedButtons(false);
-    //   setShowCorrect(false);
-    //   setCurrentIndex(currentIndex + 1);
-    // }, 2000)
+  function checkAnswer(answer) {
+
     setSeconds(30)
     if (answer == currentQ.correctAnswer) {
       setCount(count + 1)
@@ -211,11 +189,10 @@ function App() {
         setCoins(coins + 20)
       }
       setCoins(coins + 10)
-      setCurrentIndex(currentIndex + 1)
+      // setCurrentIndex(currentIndex + 1)
 
     }
     else {
-
       setCoins((coins) => {
         coins = coins - 5
         if (coins < 0) {
@@ -225,7 +202,7 @@ function App() {
         return coins
       })
 
-      setCurrentIndex(currentIndex + 1)
+
     }
   }
 
@@ -255,7 +232,7 @@ function App() {
         setBoughtBiom(true)
         setCoins(prevMoney => prevMoney - currentBiom.price)
       }
-      if (countBioms == 8 && currentBiom.selector == 'fors' ) {
+      if (countBioms == 8 && currentBiom.selector == 'fors') {
         currentBiom.bought = true
         setBoughtBiom(true)
         setCoins(prevMoney => prevMoney - currentBiom.price)
@@ -292,21 +269,14 @@ function App() {
           <h3>Монет: {coins}</h3>
 
         </div>
-        <div className="ui">
-          <img src={Bonus} alt="" />
-          <h3> Бонус:</h3>
-        </div>
-        {/* <div className="ui">
-          <img src={Shop} alt="" />
-       
-          <h3>Магазин </h3>
-        </div> */}
+
         <div className="ui">
           <img src={Passive} alt="" />
           <h3>Пассивный доход: + 1/ 30 сек</h3>
         </div>
       </div>
-      
+      {/* <button onClick={() => handleClick()} style={{ display: 'block', margin: 'auto', marginBottom: '5px' }}>Инструкция</button> */}
+      {/* <Modal handleClose={handleClose} open={open}></Modal> */}
       <div className="display">
         <div className="container">
           <div className="display1">
@@ -321,9 +291,26 @@ function App() {
           <h2 className='q'>{currentQ.question}</h2>
           {[...currentQ.incorrectAnswers, currentQ.correctAnswer].map((answer, index) => (
             <button
-              key={index}
-              onClick={() => checkAnswer(answer)}
-              className={selectedAnswer == answer ? answerClass : ''}
+              key={`${currentIndex}-${answer}`}
+              disabled={blocked}
+              onClick={() => {
+                setSelectedAnswer(answer)
+                checkAnswer(answer);
+                setBlocked(true);
+                setTimeout(() => {
+                  setBlocked(false);
+                  setSelectedAnswer(null);
+                  setCurrentIndex((prev) => prev + 1)
+                }, 2000);
+              }}
+              className={
+                blocked
+                  ? (answer === questions[currentIndex].correctAnswer
+                    ? 'correctAnswerButton'   
+                    : (answer === selectedAnswer ? 'incorrectAnswerButton' : '') 
+                  )
+                  : ''
+              }
             >
               {answer}
             </button>

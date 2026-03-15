@@ -268,10 +268,10 @@ p{
 .answerButtons{
   color: white;
 }
-.correctAnswer{
+.correctAnswerButton{
 border: 2px solid green;
 }
-.incorrectAnswer{
+.incorrectAnswerButton{
   border: 2px solid red;
 
 }
@@ -279,6 +279,10 @@ border: 2px solid green;
   display: block;
   margin: auto;
   border: 4px solid #2f4f2f;
+}
+button:disabled {
+  background-color: gray;
+  cursor: not-allowed;
 }
 @media(max-width:600px) {
   .display {
@@ -288,12 +292,9 @@ border: 2px solid green;
   .panel{
     flex-wrap: wrap;
   }
-
-
-  
   .panel .ui {
     flex: 1;
-    max-width: 200px;
+    /* max-width: 200px; */
 
 
   }
