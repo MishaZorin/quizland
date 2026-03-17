@@ -23,7 +23,7 @@ import './App.css'
 
 function App() {
   const [isOpen, setIsOpen] = useState(false)
-  function handleClick() {
+  function handleOpen() {
     setIsOpen(true)
   }
   function handleClose() {
@@ -127,7 +127,7 @@ function App() {
       }
     ]
   })
-// https://opentdb.com/api.php?amount=10&difficulty=easy
+  // https://opentdb.com/api.php?amount=10&difficulty=easy
   const [biomForestIndex, setBiomForestIndex] = useState(0)
   const [coins, setCoins] = useState(10)
   const [count, setCount] = useState(0)
@@ -137,20 +137,34 @@ function App() {
   const [selectedAnswer, setSelectedAnswer] = useState(null)
   const [answerClass, setAnswerClass] = useState(null)
   const [boughtBiom, setBoughtBiom] = useState(false);
+  const [answerButtons, setAnswerButtons] = useState([])
   const [blocked, setBlocked] = useState(false)
+  const currentQ1 = questions[currentIndex]
   async function getQuestions() {
     let url = 'https://the-trivia-api.com/api/questions?limit=100&categories=geography&difficulties=easy'
     try {
       let response = await fetch(url)
       let result = await response.json()
       setQuestions(result)
-      console.log(result);
+    
 
     }
     catch (error) {
       console.error("Ошибка при загрузке:", error)
     }
   }
+  useEffect(() => {
+      if (!questions.length) return
+
+      const currentQ = questions[currentIndex]
+
+      const answers = [
+        ...currentQ.incorrectAnswers,
+        currentQ.correctAnswer
+      ].sort(() => Math.random() - 0.5)
+
+      setAnswerButtons(answers)
+    }, [questions, currentIndex])
   useEffect(() => {
     if (seconds <= 0) {
       setSeconds(30)
@@ -175,12 +189,12 @@ function App() {
   if (questions.length === 0) {
     return <div>loading...</div>
   }
-  const currentQ = questions[currentIndex]
+
 
   function checkAnswer(answer) {
 
     setSeconds(30)
-    if (answer == currentQ.correctAnswer) {
+    if (answer == currentQ1.correctAnswer) {
       setCount(count + 1)
       if (count == 2) {
         setCoins(coins + 10)
@@ -238,6 +252,10 @@ function App() {
         alert("Поздравляю!Вы победили!")
         setCoins(prevMoney => prevMoney - currentBiom.price)
       }
+      if (coins <= 0) {
+        setCoins(0)
+        currentBiom.bought = false
+      }
       if (currentBiom.bought) {
         passiveIncome()
       }
@@ -276,8 +294,8 @@ function App() {
           <h3>Пассивный доход: + 1/ 30 сек</h3>
         </div>
       </div>
-      {/* <button onClick={() => handleClick()} style={{ display: 'block', margin: 'auto', marginBottom: '5px' }}>Инструкция</button> */}
-      {/* <Modal handleClose={handleClose} open={open}></Modal> */}
+      <button onClick={() => handleOpen()} style={{ display: 'block', margin: 'auto', marginBottom: '5px' }}>Инструкция</button>
+      <Modal isOpen={isOpen} handleClose={()=>handleClose()}></Modal>
       <div className="display">
         <div className="container">
           <div className="display1">
@@ -289,8 +307,8 @@ function App() {
           </div>
         </div>
         <div className="quiz">
-          <h2 className='q'>{currentQ.question}</h2>
-          {[...currentQ.incorrectAnswers, currentQ.correctAnswer].map((answer, index) => (
+          <h2 className='q'>{currentQ1.question}</h2>
+          {answerButtons.map((answer, index) => (
             <button
               // key={`${currentIndex}-${answer}`}
               disabled={blocked}
@@ -307,8 +325,8 @@ function App() {
               className={
                 blocked
                   ? (answer === questions[currentIndex].correctAnswer
-                    ? 'correctAnswerButton'   
-                    : (answer === selectedAnswer ? 'incorrectAnswerButton' : '') 
+                    ? 'correctAnswerButton'
+                    : (answer === selectedAnswer ? 'incorrectAnswerButton' : '')
                   )
                   : ''
               }

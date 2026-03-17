@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 
-function Modal({open,handleClose}) {
-    if (!open) return null
+function Modal({isOpen,handleClose}) {
+    if (!isOpen) return null
 
   return (
        <div className='modal'>
