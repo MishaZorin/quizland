@@ -293,8 +293,7 @@ button:disabled {
     flex-wrap: wrap;
   }
   .panel .ui {
-    flex: 1;
-    /* max-width: 200px; */
+    max-width: 200px;
 
 
   }

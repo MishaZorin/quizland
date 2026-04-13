@@ -192,7 +192,6 @@ function App() {
 
 
   function checkAnswer(answer) {
-
     setSeconds(30)
     if (answer == currentQ1.correctAnswer) {
       setCount(count + 1)
@@ -223,17 +222,12 @@ function App() {
   let isFinished = currentIndex >= questions.length
   if (isFinished) {
     return <div className="o">
-      <h4 id='showRsult'>Ваш Результат: Очков: {count} из {questions.length} , Время прохождения:</h4>
-      <button onClick={() => startAgain()} className='again'>Заново!</button>
+      <h4 id='showRsult'>Ваш Результат: {count} из {questions.length} </h4>
+      <p>Для продолжения перезагрузите страницу</p>
     </div>
 
   }
-  function startAgain() {
-    setCount(0)
-    setCurrentIndex(0)
-    setMoney(10)
 
-  }
 
   function buyArea(biomForestIndex) {
     setBiomForestIndex(biomForestIndex)
@@ -285,7 +279,7 @@ function App() {
         </div>
         <div className="ui">
           <img src={Coins} alt="" />
-          <h3>Монет: {coins}</h3>
+          <h3>Монеты: {coins}</h3>
 
         </div>
 
@@ -294,7 +288,7 @@ function App() {
           <h3>Пассивный доход: + 1/ 30 сек</h3>
         </div>
       </div>
-      <button onClick={() => handleOpen()} style={{ display: 'block', margin: 'auto', marginBottom: '5px' }}>Инструкция</button>
+      <button onClick={() => handleOpen()} style={{ display: 'block', margin: 'auto', marginBottom: '10px' }}>Инструкция</button>
       <Modal isOpen={isOpen} handleClose={()=>handleClose()}></Modal>
       <div className="display">
         <div className="container">
@@ -319,8 +313,9 @@ function App() {
                 setTimeout(() => {
                   setBlocked(false);
                   setSelectedAnswer(null);
+                  setSeconds(30)
                   setCurrentIndex((prev) => prev + 1)
-                }, 2000);
+                }, 1000);
               }}
               className={
                 blocked
